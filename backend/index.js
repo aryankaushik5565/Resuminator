@@ -5,7 +5,6 @@ const { default: mongoose } = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
-const { Configuration, OpenAIApi } = require("openai");
 const User = require("./models/User");
 const Personal = require("./models/Personal");
 const Objective = require("./models/Objective");
@@ -18,11 +17,6 @@ const Reference = require("./models/Reference");
 const app = express();
 require("dotenv").config();
 const port = 8000 || process.env.PORT;
-
-// const config = new Configuration({
-//   apiKey: process.env.OPEN_AI_API_KEY,
-// });
-// const openai = new OpenAIApi(config);
 
 //! gemini setup
 const geminiApiKey = process.env.API_KEY;

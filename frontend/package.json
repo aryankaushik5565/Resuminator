@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mantine/core": "^6.0.13",
     "@mantine/hooks": "^7.17.5",
     "@react-spring/web": "^9.7.2",
     "@tippyjs/react": "^4.2.6",

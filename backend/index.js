@@ -26,11 +26,7 @@ const geminiModel = googleAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 // console.log(process.env.MONGO_URL)
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: true,
-  })
-);
+app.use(cors());
 app.use(cookieParser());
 const jwtSecret = "E3P5S8X4G2B7F1Y9D6I0C3R6K9T2Z1A7L";
 const bcryptSalt = bcrypt.genSaltSync(10);

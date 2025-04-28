@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "*",
+    origin: "https://ip-resuminator.vercel.app",
   })
 );
 app.use(cookieParser());

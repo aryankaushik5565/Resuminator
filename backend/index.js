@@ -17,13 +17,12 @@ const Reference = require("./models/Reference");
 const app = express();
 require("dotenv").config();
 const port = 8000 || process.env.PORT;
+const mongoConnection = require("./connections/mongoConnection.js");
 
 //! gemini setup
 const geminiApiKey = process.env.API_KEY;
 const googleAI = new GoogleGenerativeAI(geminiApiKey);
 const geminiModel = googleAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
-// console.log(process.env.MONGO_URL)
 
 app.use(express.json());
 app.use(
@@ -35,16 +34,12 @@ app.use(
 app.use(cookieParser());
 const jwtSecret = "E3P5S8X4G2B7F1Y9D6I0C3R6K9T2Z1A7L";
 const bcryptSalt = bcrypt.genSaltSync(10);
+mongoConnection(process.env.MONGO_URL);
 
 app.get("/", (req, res) => {
   res.json("Server is up and running");
 });
-app.get("/api/test", (req, res) => {
-  // await mongoose.connect(process.env.MONGO_URL);
-  res.json("Test Ok");
-});
 app.post("/api/register", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const { username, email, password } = req.body;
 
   try {
@@ -68,7 +63,6 @@ const getUserDataFromToken = (req) => {
   });
 };
 app.post("/api/login", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const { username, password } = req.body;
   const userData = await User.findOne({ username });
   if (userData) {
@@ -94,7 +88,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 app.get("/api/profile", (req, res) => {
-  // await mongoose.connect(process.env.MONGO_URL);
+  //
   const { token } = req.cookies;
   // res.json({token})
   if (token) {
@@ -109,12 +103,10 @@ app.get("/api/profile", (req, res) => {
   }
 });
 app.post("/api/logout", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   res.cookie("token", "").json(true);
 });
 // Post details to the database
 app.post("/api/personal", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   // get token to verify the user
   const { token } = req.cookies;
   const { name, email, address, phone, website, linked } = req.body;
@@ -137,7 +129,6 @@ app.post("/api/personal", async (req, res) => {
   });
 });
 app.post("/api/objective", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { objective } = req.body;
 
@@ -152,7 +143,6 @@ app.post("/api/objective", async (req, res) => {
   }
 });
 app.post("/api/experience", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { experiences } = req.body;
 
@@ -167,7 +157,6 @@ app.post("/api/experience", async (req, res) => {
   }
 });
 app.post("/api/education", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   // res.json(userData)
   const { education } = req.body;
@@ -183,7 +172,6 @@ app.post("/api/education", async (req, res) => {
   }
 });
 app.post("/api/skills", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { content } = req.body;
 
@@ -198,7 +186,6 @@ app.post("/api/skills", async (req, res) => {
   }
 });
 app.post("/api/projects", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { project } = req.body;
 
@@ -213,7 +200,6 @@ app.post("/api/projects", async (req, res) => {
   }
 });
 app.post("/api/certifications", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { certificate } = req.body;
 
@@ -228,7 +214,6 @@ app.post("/api/certifications", async (req, res) => {
   }
 });
 app.post("/api/reference", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { referees } = req.body;
   // res.json(referees)
@@ -244,7 +229,6 @@ app.post("/api/reference", async (req, res) => {
 });
 // Fetch all Details for the resume Download
 app.get("/api/resume", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const personal = await Personal.find({ user: userData.id });
@@ -275,7 +259,6 @@ app.get("/api/resume", async (req, res) => {
 
 // Fetch details from the database for edit purposes
 app.get("/api/personal", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const personal = await Personal.findOne({ user: userData.id });
@@ -286,7 +269,6 @@ app.get("/api/personal", async (req, res) => {
   }
 });
 app.get("/api/objective", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const objective = await Objective.findOne({ user: userData.id });
@@ -297,7 +279,6 @@ app.get("/api/objective", async (req, res) => {
   }
 });
 app.get("/api/experience", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const experience = await Experience.findOne({ user: userData.id });
@@ -308,7 +289,6 @@ app.get("/api/experience", async (req, res) => {
   }
 });
 app.get("/api/education", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   // res.json(userData.id)
   try {
@@ -320,7 +300,6 @@ app.get("/api/education", async (req, res) => {
   }
 });
 app.get("/api/skills", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const skills = await Skills.findOne({ user: userData.id });
@@ -331,7 +310,6 @@ app.get("/api/skills", async (req, res) => {
   }
 });
 app.get("/api/projects", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const projects = await Projects.findOne({ user: userData.id });
@@ -342,7 +320,6 @@ app.get("/api/projects", async (req, res) => {
   }
 });
 app.get("/api/certification", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const certification = await Certification.findOne({ user: userData.id });
@@ -353,7 +330,6 @@ app.get("/api/certification", async (req, res) => {
   }
 });
 app.get("/api/referee", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const referee = await Reference.findOne({ user: userData.id });
@@ -366,7 +342,6 @@ app.get("/api/referee", async (req, res) => {
 
 // Edit details and update them to Mongo Atlas DB
 app.put("/api/personal", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { name, email, address, phone, website, linked } = req.body;
   // console.log({user})
@@ -388,7 +363,6 @@ app.put("/api/personal", async (req, res) => {
   }
 });
 app.put("/api/objective", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { objective } = req.body;
   // console.log({user})
@@ -405,7 +379,6 @@ app.put("/api/objective", async (req, res) => {
   }
 });
 app.put("/api/experience", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { experiences } = req.body;
   // console.log({user})
@@ -422,7 +395,6 @@ app.put("/api/experience", async (req, res) => {
   }
 });
 app.put("/api/education", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { education } = req.body;
   // console.log({user})
@@ -439,7 +411,6 @@ app.put("/api/education", async (req, res) => {
   }
 });
 app.put("/api/skills", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { content } = req.body;
   // console.log({user})
@@ -456,7 +427,6 @@ app.put("/api/skills", async (req, res) => {
   }
 });
 app.put("/api/projects", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { project } = req.body;
   // console.log({user})
@@ -473,7 +443,6 @@ app.put("/api/projects", async (req, res) => {
   }
 });
 app.put("/api/certifications", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { certificate } = req.body;
   // console.log({user})
@@ -490,7 +459,6 @@ app.put("/api/certifications", async (req, res) => {
   }
 });
 app.put("/api/reference", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   const { referees } = req.body;
   // console.log({user})
@@ -508,7 +476,6 @@ app.put("/api/reference", async (req, res) => {
 });
 // Delete Resume Details
 app.delete("/api/personal", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const personal = await Personal.deleteOne({ user: userData.id });
@@ -523,7 +490,6 @@ app.delete("/api/personal", async (req, res) => {
 });
 
 app.delete("/api/objective", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const objective = await Objective.deleteOne({ user: userData.id });
@@ -537,7 +503,6 @@ app.delete("/api/objective", async (req, res) => {
   }
 });
 app.delete("/api/experience/:id", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const { id } = req.params;
   const userData = await getUserDataFromToken(req);
 
@@ -558,7 +523,6 @@ app.delete("/api/experience/:id", async (req, res) => {
 });
 
 app.delete("/api/education/:id", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const { id } = req.params;
   const userData = await getUserDataFromToken(req);
 
@@ -579,7 +543,6 @@ app.delete("/api/education/:id", async (req, res) => {
 });
 
 app.delete("/api/skills", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const skills = await Skills.deleteOne({ user: userData.id });
@@ -594,7 +557,6 @@ app.delete("/api/skills", async (req, res) => {
 });
 
 app.delete("/api/project/:id", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const { id } = req.params;
   const userData = await getUserDataFromToken(req);
 
@@ -615,7 +577,6 @@ app.delete("/api/project/:id", async (req, res) => {
 });
 
 app.delete("/api/certification", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const userData = await getUserDataFromToken(req);
   try {
     const certification = await Certification.deleteOne({ user: userData.id });
@@ -630,7 +591,6 @@ app.delete("/api/certification", async (req, res) => {
 });
 
 app.delete("/api/reference/:id", async (req, res) => {
-  await mongoose.connect(process.env.MONGO_URL);
   const { id } = req.params;
   const userData = await getUserDataFromToken(req);
 

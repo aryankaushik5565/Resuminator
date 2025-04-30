@@ -28,8 +28,8 @@ const geminiModel = googleAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 app.use(express.json());
 app.use(
   cors({
+    origin: true,
     credentials: true,
-    origin: "http://localhost:5173",
   })
 );
 app.use(cookieParser());

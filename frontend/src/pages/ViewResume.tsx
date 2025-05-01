@@ -62,7 +62,9 @@ const ViewResume = ({ handleModal }: { handleModal: () => void }) => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const { data } = await axios.get("/resume");
+      const { data } = await axios.get("/resume", {
+        withCredentials: true
+      });
       if (data) {
         setResumeData(data);
         setIsLoading(false);

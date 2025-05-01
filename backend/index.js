@@ -27,7 +27,7 @@ const geminiModel = googleAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 app.use(express.json());
 app.use(
   cors({
-    origin: true,
+    origin: "https://ip-resuminator.vercel.app",
     credentials: true,
   })
 );
@@ -79,7 +79,11 @@ app.post("/api/login", async (req, res) => {
         {},
         (e, token) => {
           if (e) throw e;
-          res.cookie("token", token).json(userData);
+          res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+          }).json(userData);
         }
       );
     } else {

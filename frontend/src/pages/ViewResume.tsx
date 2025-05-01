@@ -3,6 +3,7 @@ import axios from "axios";
 import html2pdf from "html2pdf.js";
 import Loading from "../components/Loading";
 import { useResumeContext } from "../context/ResumeContext";
+import Cookies from 'universal-cookie';
 
 interface resumeProps {
   personal: {
@@ -59,11 +60,13 @@ const ViewResume = ({ handleModal }: { handleModal: () => void }) => {
   const [resumeData, setResumeData] = useState<resumeProps | null>(null);
   const { user } = useResumeContext();
   const [isLoading, setIsLoading] = useState(false);
+  const cookie = new Cookies();
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const { data } = await axios.get("/resume", {
-        withCredentials: true
+      const { data } = await axios.post("/resume", {
+        "token": cookie.get("token")
       });
       if (data) {
         setResumeData(data);

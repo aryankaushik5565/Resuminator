@@ -22,6 +22,7 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.11.2",
     "react-spring": "^9.7.1",
+    "universal-cookie": "^8.0.1",
     "yup": "^1.2.0"
   },
   "devDependencies": {

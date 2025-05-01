@@ -36,10 +36,10 @@ const jwtSecret = "E3P5S8X4G2B7F1Y9D6I0C3R6K9T2Z1A7L";
 const bcryptSalt = bcrypt.genSaltSync(10);
 mongoConnection(process.env.MONGO_URL);
 
-const getUserDataFromToken = async (req) => {
+const getUserDataFromToken = async (token) => {
   return new Promise((resolve, reject) => {
-    console.log(req.cookies)
-    jwt.verify(req.cookies.token, jwtSecret, {}, (e, userData) => {
+    console.log(token)
+    jwt.verify(token, jwtSecret, {}, (e, userData) => {
       if (e) throw e;
       resolve(userData);
     });
@@ -234,8 +234,9 @@ app.post("/api/reference", async (req, res) => {
   }
 });
 // Fetch all Details for the resume Download
-app.get("/api/resume", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+app.post("/api/resume", async (req, res) => {
+  const {token} = req.body;
+  const userData = await getUserDataFromToken(token);
   try {
     const personal = await Personal.find({ user: userData.id });
     const objective = await Objective.find({ user: userData.id });

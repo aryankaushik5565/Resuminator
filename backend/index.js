@@ -237,8 +237,7 @@ app.post("/api/reference", async (req, res) => {
 });
 // Fetch all Details for the resume Download
 app.post("/api/resume", async (req, res) => {
-  console.log(req.body, req.cookies, req);
-  const { token } = req.body;
+  const token = req.cookies.token;
   const userData = await getUserDataFromToken(token);
   try {
     const personal = await Personal.find({ user: userData.id });

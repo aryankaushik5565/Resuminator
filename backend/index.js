@@ -36,6 +36,15 @@ const jwtSecret = "E3P5S8X4G2B7F1Y9D6I0C3R6K9T2Z1A7L";
 const bcryptSalt = bcrypt.genSaltSync(10);
 mongoConnection(process.env.MONGO_URL);
 
+const getUserDataFromToken = async (req) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, (e, userData) => {
+      if (e) throw e;
+      resolve(userData);
+    });
+  });
+};
+
 app.get("/", (req, res) => {
   res.json("Server is up and running");
 });
@@ -54,14 +63,6 @@ app.post("/api/register", async (req, res) => {
     res.status(422).json("Failed to create User");
   }
 });
-const getUserDataFromToken = (req) => {
-  return new Promise((resolve, reject) => {
-    jwt.verify(req.cookies.token, jwtSecret, {}, (e, userData) => {
-      if (e) throw e;
-      resolve(userData);
-    });
-  });
-};
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
   const userData = await User.findOne({ username });

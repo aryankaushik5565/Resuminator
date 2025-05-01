@@ -38,6 +38,7 @@ mongoConnection(process.env.MONGO_URL);
 
 const getUserDataFromToken = async (req) => {
   return new Promise((resolve, reject) => {
+    console.log(req)
     jwt.verify(req.cookies.token, jwtSecret, {}, (e, userData) => {
       if (e) throw e;
       resolve(userData);

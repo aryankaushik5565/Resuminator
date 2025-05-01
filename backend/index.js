@@ -137,7 +137,8 @@ app.post("/api/personal", async (req, res) => {
   });
 });
 app.post("/api/objective", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { objective } = req.body;
 
   try {
@@ -151,7 +152,8 @@ app.post("/api/objective", async (req, res) => {
   }
 });
 app.post("/api/experience", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { experiences } = req.body;
 
   try {
@@ -165,7 +167,8 @@ app.post("/api/experience", async (req, res) => {
   }
 });
 app.post("/api/education", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   // res.json(userData)
   const { education } = req.body;
 
@@ -180,7 +183,8 @@ app.post("/api/education", async (req, res) => {
   }
 });
 app.post("/api/skills", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { content } = req.body;
 
   try {
@@ -194,7 +198,8 @@ app.post("/api/skills", async (req, res) => {
   }
 });
 app.post("/api/projects", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { project } = req.body;
 
   try {
@@ -208,7 +213,8 @@ app.post("/api/projects", async (req, res) => {
   }
 });
 app.post("/api/certifications", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { certificate } = req.body;
 
   try {
@@ -222,7 +228,8 @@ app.post("/api/certifications", async (req, res) => {
   }
 });
 app.post("/api/reference", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { referees } = req.body;
   // res.json(referees)
   try {
@@ -268,7 +275,8 @@ app.post("/api/resume", async (req, res) => {
 
 // Fetch details from the database for edit purposes
 app.get("/api/personal", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const personal = await Personal.findOne({ user: userData.id });
     res.json(personal);
@@ -278,7 +286,8 @@ app.get("/api/personal", async (req, res) => {
   }
 });
 app.get("/api/objective", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const objective = await Objective.findOne({ user: userData.id });
     res.json(objective);
@@ -288,7 +297,8 @@ app.get("/api/objective", async (req, res) => {
   }
 });
 app.get("/api/experience", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const experience = await Experience.findOne({ user: userData.id });
     res.json(experience);
@@ -298,7 +308,8 @@ app.get("/api/experience", async (req, res) => {
   }
 });
 app.get("/api/education", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   // res.json(userData.id)
   try {
     const education = await Education.findOne({ user: userData.id });
@@ -309,7 +320,8 @@ app.get("/api/education", async (req, res) => {
   }
 });
 app.get("/api/skills", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const skills = await Skills.findOne({ user: userData.id });
     res.json(skills);
@@ -319,7 +331,8 @@ app.get("/api/skills", async (req, res) => {
   }
 });
 app.get("/api/projects", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const projects = await Projects.findOne({ user: userData.id });
     res.json(projects);
@@ -329,7 +342,8 @@ app.get("/api/projects", async (req, res) => {
   }
 });
 app.get("/api/certification", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const certification = await Certification.findOne({ user: userData.id });
     res.json(certification);
@@ -339,7 +353,8 @@ app.get("/api/certification", async (req, res) => {
   }
 });
 app.get("/api/referee", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const referee = await Reference.findOne({ user: userData.id });
     res.json(referee);
@@ -351,7 +366,8 @@ app.get("/api/referee", async (req, res) => {
 
 // Edit details and update them to Mongo Atlas DB
 app.put("/api/personal", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { name, email, address, phone, website, linked } = req.body;
   // console.log({user})
   try {
@@ -372,7 +388,8 @@ app.put("/api/personal", async (req, res) => {
   }
 });
 app.put("/api/objective", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { objective } = req.body;
   // console.log({user})
   try {
@@ -388,7 +405,8 @@ app.put("/api/objective", async (req, res) => {
   }
 });
 app.put("/api/experience", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { experiences } = req.body;
   // console.log({user})
   try {
@@ -404,7 +422,8 @@ app.put("/api/experience", async (req, res) => {
   }
 });
 app.put("/api/education", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { education } = req.body;
   // console.log({user})
   try {
@@ -420,7 +439,8 @@ app.put("/api/education", async (req, res) => {
   }
 });
 app.put("/api/skills", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { content } = req.body;
   // console.log({user})
   try {
@@ -436,7 +456,8 @@ app.put("/api/skills", async (req, res) => {
   }
 });
 app.put("/api/projects", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { project } = req.body;
   // console.log({user})
   try {
@@ -452,7 +473,8 @@ app.put("/api/projects", async (req, res) => {
   }
 });
 app.put("/api/certifications", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { certificate } = req.body;
   // console.log({user})
   try {
@@ -468,7 +490,8 @@ app.put("/api/certifications", async (req, res) => {
   }
 });
 app.put("/api/reference", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   const { referees } = req.body;
   // console.log({user})
   try {
@@ -485,7 +508,8 @@ app.put("/api/reference", async (req, res) => {
 });
 // Delete Resume Details
 app.delete("/api/personal", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const personal = await Personal.deleteOne({ user: userData.id });
     if (personal.deletedCount === 0) {
@@ -499,7 +523,8 @@ app.delete("/api/personal", async (req, res) => {
 });
 
 app.delete("/api/objective", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const objective = await Objective.deleteOne({ user: userData.id });
     if (objective.deletedCount === 0) {
@@ -513,7 +538,8 @@ app.delete("/api/objective", async (req, res) => {
 });
 app.delete("/api/experience/:id", async (req, res) => {
   const { id } = req.params;
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
 
   try {
     const experience = await Experience.findOneAndUpdate(
@@ -533,7 +559,8 @@ app.delete("/api/experience/:id", async (req, res) => {
 
 app.delete("/api/education/:id", async (req, res) => {
   const { id } = req.params;
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
 
   try {
     const education = await Education.findOneAndUpdate(
@@ -552,7 +579,8 @@ app.delete("/api/education/:id", async (req, res) => {
 });
 
 app.delete("/api/skills", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const skills = await Skills.deleteOne({ user: userData.id });
     if (!skills) {
@@ -567,7 +595,8 @@ app.delete("/api/skills", async (req, res) => {
 
 app.delete("/api/project/:id", async (req, res) => {
   const { id } = req.params;
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
 
   try {
     const projects = await Projects.findOneAndUpdate(
@@ -586,7 +615,8 @@ app.delete("/api/project/:id", async (req, res) => {
 });
 
 app.delete("/api/certification", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
   try {
     const certification = await Certification.deleteOne({ user: userData.id });
     if (!certification) {
@@ -601,7 +631,8 @@ app.delete("/api/certification", async (req, res) => {
 
 app.delete("/api/reference/:id", async (req, res) => {
   const { id } = req.params;
-  const userData = await getUserDataFromToken(req);
+  const token = req.cookies.token;
+  const userData = await getUserDataFromToken(token);
 
   try {
     const reference = await Reference.findOneAndUpdate(
@@ -611,6 +642,7 @@ app.delete("/api/reference/:id", async (req, res) => {
     );
     if (!reference) {
       return res.status(404).json({ error: "Details not found" });
+      f;
     }
     res.json({ message: "Referee Details deleted successfully" });
   } catch (e) {

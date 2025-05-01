@@ -38,7 +38,7 @@ mongoConnection(process.env.MONGO_URL);
 
 const getUserDataFromToken = async (token) => {
   return new Promise((resolve, reject) => {
-    console.log(token)
+    console.log(token);
     jwt.verify(token, jwtSecret, {}, (e, userData) => {
       if (e) throw e;
       resolve(userData);
@@ -79,11 +79,13 @@ app.post("/api/login", async (req, res) => {
         {},
         (e, token) => {
           if (e) throw e;
-          res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "None"
-          }).json(userData);
+          res
+            .cookie("token", token, {
+              httpOnly: true,
+              secure: true,
+              sameSite: "None",
+            })
+            .json(userData);
         }
       );
     } else {
@@ -235,7 +237,8 @@ app.post("/api/reference", async (req, res) => {
 });
 // Fetch all Details for the resume Download
 app.post("/api/resume", async (req, res) => {
-  const {token} = req.body;
+  console.log(req.body, req.cookies, req);
+  const { token } = req.body;
   const userData = await getUserDataFromToken(token);
   try {
     const personal = await Personal.find({ user: userData.id });
